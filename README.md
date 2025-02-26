@@ -3,7 +3,7 @@
 [![Version](https://img.shields.io/badge/version-1.9.4-blue.svg)](https://github.com/rkeaves/auto-delete-unit3d)
 [![License: GPL-3.0-or-later](https://img.shields.io/badge/License-GPL--3.0--or--later-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 
-auto-delete-unit3d is a userscript designed to automate the deletion process of torrent entries on UNIT3D-based trackers. It streamlines the workflow by processing a user-defined list of torrent URLs sequentially, detecting successful deletions via 404 error pages, and even offering a quick "Add" button for torrent links to queue them effortlessly.
+The auto-delete-unit3d userscript automates the deletion of torrent entries on UNIT3D-based trackers. It processes a user-defined list of torrent URLs sequentially, identifies successful deletions via 404 error pages, and includes a convenient "Add" button for effortlessly queuing torrent links. Additionally, you can drag and drop the URL directly into the text box to add it to the queue. To prevent detection and potential blocking, the script incorporates random time intervals between deletion attempts, ensuring a more natural and less predictable deletion pattern.
 
 ---
 
@@ -51,14 +51,14 @@ To install auto-delete-unit3d:
 
 3. **Supported Trackers:**
    - The script is configured for multiple UNIT3D-based trackers including:
-     - privatesilverscreen.cc
-     - onlyencodes.cc
-     - blutopia.cc
-     - yu-scene.net
-     - fearnopeer.com
-     - aither.cc
-     - capybarabr.com
-     - locadora.cc
+     - PSS
+     - OE
+     - BLU
+     - YU-S
+     - FNP 
+     - AITHER
+     - CBR
+     - LCD
 
 ---
 
@@ -122,5 +122,3 @@ For major changes, please open an issue first to discuss what you would like to 
 This project is licensed under the [GPL-3.0-or-later](LICENSE).
 
 ---
-
-*Happy torrent managing!*
