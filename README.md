@@ -1,6 +1,6 @@
 # auto-delete-unit3d
 
-[![Version](https://img.shields.io/badge/version-1.9.4-blue.svg)](https://github.com/rkeaves/auto-delete-unit3d)
+[![Version](https://img.shields.io/badge/version-1.1.4-blue.svg)](https://github.com/rkeaves/auto-delete-unit3d)
 [![License: GPL-3.0-or-later](https://img.shields.io/badge/License-GPL--3.0--or--later-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 
 The auto-delete-unit3d userscript automates the deletion of torrent entries on UNIT3D-based trackers. It processes a user-defined list of torrent URLs sequentially, identifies successful deletions via 404 error pages, and includes a convenient "Add" button for effortlessly queuing torrent links. Additionally, you can drag and drop the URL directly into the text box to add it to the queue. To prevent detection and potential blocking, the script incorporates random time intervals between deletion attempts, ensuring a more natural and less predictable deletion pattern.
