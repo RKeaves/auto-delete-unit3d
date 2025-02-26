@@ -5,7 +5,7 @@
 
 The auto-delete-unit3d userscript automates the deletion of torrent entries on UNIT3D-based trackers. It processes a user-defined list of torrent URLs sequentially, identifies successful deletions via 404 error pages, and includes a convenient "Add" button for effortlessly queuing torrent links. Additionally, you can drag and drop the URL directly into the text box to add it to the queue. To prevent detection and potential blocking, the script incorporates random time intervals between deletion attempts, ensuring a more natural and less predictable deletion pattern.
 
-<img src="https://ptpimg.me/7mi8l1.gif" width="900">
+<img src="https://ptpimg.me/rw57oc.gif" width="900">
 
 ---
 
