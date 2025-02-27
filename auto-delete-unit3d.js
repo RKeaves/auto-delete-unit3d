@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        auto-delete-unit3d
-// @version     1.9.4
+// @version     1.2.0
 // @namespace   https://github.com/rkeaves
 // @description Automates deletion of torrents on UNIT3D trackers using a list of URLs. Processes URLs sequentially, detects 404 pages as successful deletion, and if a 404 page is encountered (showing the Go Home button), it simulates a click on it to return to home before proceeding. Also adds “Add” buttons next to torrent links so you can quickly append URLs to the queue.
 // @match       https://privatesilverscreen.cc/*
@@ -18,14 +18,13 @@
 // @grant       GM_getValue
 // @grant       GM_registerMenuCommand
 // @grant       GM_unregisterMenuCommand
-// @license     GPL-3.0-or-later
 // ==/UserScript==
 
 (function() {
     'use strict';
     const STORAGE_KEY = 'autoDeleteQueue';
     const REASON_TEXT = 'sorry, file deleted !'; // Deletion reason text
-    const DELAY = 2000; // Delay in ms
+    const DELAY = 5000; // Delay in ms
 
     class TorrentDeleter {
         constructor() {
@@ -40,6 +39,10 @@
             // Always update the queue from storage.
             this.queue = GM_getValue(STORAGE_KEY, null);
             console.log("Current queue:", this.queue);
+            // If a deletion queue exists, update progress indicator in the textarea.
+            if (this.queue && this.queue.urls && this.queue.urls.length) {
+                this.updateProgress();
+            }
             if (this.isTorrentPage()) {
                 if (this.isDetailPage()) {
                     // We're on a torrent detail page – handle deletion.
@@ -68,6 +71,19 @@
             return /\/torrents\/\d+/.test(window.location.pathname);
         }
 
+        // Modified: Update the textarea with progress information.
+        updateProgress() {
+            if (this.queue && this.textarea) {
+                const total = this.queue.urls.length;
+                if (this.queue.index < total) {
+                    const current = this.queue.index + 1;
+                    this.textarea.value = `Processing link #${current} of ${total}`;
+                } else {
+                    this.textarea.value = 'Queue completed.';
+                }
+            }
+        }
+
         createUI() {
             if (document.getElementById("autoDeleteUI")) return; // Avoid duplicates.
             const container = document.createElement('div');
@@ -89,9 +105,13 @@
             title.textContent = 'Auto Delete Torrents';
             title.style = 'margin-top: 0; color: #343a40;';
 
+            // Create the main instructions paragraph
             const instructions = document.createElement('p');
-            instructions.textContent = 'Enter one torrent URL per line:';
+            instructions.innerHTML = 'Enter one URL per line:<br><span style="font-size: 12px; font-style: italic; color: #6c757d;">Try a refresh if Add isn’t working.</span>';
             instructions.style = 'font-size: 14px; color: #495057; margin: 10px 0;';
+
+            // Append the instructions to the desired parent element
+            document.body.appendChild(instructions);
 
             const textarea = document.createElement('textarea');
             textarea.style = `
@@ -103,6 +123,8 @@
                 font-size: 14px;
             `;
             textarea.placeholder = 'https://privatesilverscreen.cc/torrents/8689\nhttps://privatesilverscreen.cc/torrents/6969';
+            // Save reference for progress updates.
+            this.textarea = textarea;
 
             // Auto-newline on paste:
             textarea.addEventListener('paste', (e) => {
@@ -179,9 +201,66 @@
                 window.location.href = urls[0];
             });
 
+            // --- Add All Button ---
+            const addAllButton = document.createElement('button');
+            addAllButton.textContent = 'Add All';
+            addAllButton.style = `
+                position: absolute;
+                top: 50px;  /* Adjust this value as needed to place it directly below the Stop button */
+                right: 10px;
+                padding: 5px 10px;
+                background: #6c757d;
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+                font-size: 12px;
+                cursor: pointer;
+            `;
+            addAllButton.addEventListener('click', () => {
+                const links = document.querySelectorAll('a.user-uploads__name');
+                if (!links.length) {
+                    alert('No torrent links found on this page!');
+                    return;
+                }
+                const urls = Array.from(links).map(link => link.href.trim());
+                const textarea = container.querySelector('textarea');
+                const existingContent = textarea.value.trim();
+                const separator = existingContent ? '\n' : '';
+                textarea.value = existingContent + separator + urls.join('\n') + '\n';
+                textarea.style.backgroundColor = '#e2f7d4';
+                setTimeout(() => { textarea.style.backgroundColor = ''; }, 500);
+            });
+
             container.appendChild(title);
             container.appendChild(instructions);
             container.appendChild(textarea);
+            container.appendChild(addAllButton);
+
+            // --- New Button: Refresh and Clear Queue ---
+            const newButton = document.createElement('button');
+            newButton.textContent = 'New list';
+            newButton.style = `
+                position: absolute;
+                top: 80px;
+                right: 10px;
+                padding: 5px 10px;
+                background: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+                font-size: 11.1px;
+                cursor: pointer;
+            `;
+            newButton.addEventListener('click', () => {
+                GM_setValue(STORAGE_KEY, null);
+                if (textarea) {
+                    textarea.value = '';
+                }
+                const baseUrl = window.location.href.split('?')[0];
+                window.location.href = baseUrl + '?cacheBuster=' + new Date().getTime();
+            });
+            container.appendChild(newButton);
+
             container.appendChild(button);
             document.body.appendChild(container);
         }
@@ -193,18 +272,19 @@
             if (document.getElementById("autoDeleteStop")) return;
             const stopBtn = document.createElement('button');
             stopBtn.id = "autoDeleteStop";
-            stopBtn.textContent = 'Stop';
+            stopBtn.textContent = ' STOP ';
             stopBtn.style = `
                 position: absolute;
-                top: 15px;
+                top: 18px;
                 right: 10px;
                 padding: 5px 10px;
                 background: #6c757d;
                 color: #fff;
                 border: none;
                 border-radius: 4px;
-                font-size: 12px;
+                font-size: 14px;  /* Adjust this value to match Add All */
                 cursor: pointer;
+                width: auto;  /* Or set a fixed width if desired */
             `;
             stopBtn.addEventListener('click', () => {
                 GM_setValue(STORAGE_KEY, null);
@@ -219,6 +299,8 @@
 
         async handleTorrentPage() {
             if (!this.queue || this.isProcessing) return;
+            // Update progress on torrent detail pages.
+            this.updateProgress();
             // If the current page is a 404 error, assume deletion succeeded.
             if (document.title.includes("404") || document.body.innerText.includes("404: Page Not Found")) {
                 console.log("404 detected on torrent page.");
@@ -297,6 +379,7 @@
                     console.log("Detected 'Go Home' button. Incrementing index and clicking it.");
                     this.queue.index++;
                     GM_setValue(STORAGE_KEY, this.queue);
+                    this.updateProgress();
                     goHomeBtn.click();
                     await this.delay(DELAY);
                     return;
@@ -304,6 +387,7 @@
                     console.log("404 detected but no 'Go Home' button found. Incrementing index and proceeding.");
                     this.queue.index++;
                     GM_setValue(STORAGE_KEY, this.queue);
+                    this.updateProgress();
                 }
                 // After processing 404, redirect to the next URL.
                 if (this.queue.index < this.queue.urls.length) {
