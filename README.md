@@ -1,6 +1,6 @@
 # auto-delete-unit3d
 
-[![Version](https://img.shields.io/badge/version-1.1.4-blue.svg)](https://github.com/rkeaves/auto-delete-unit3d)
+[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://github.com/rkeaves/auto-delete-unit3d)
 [![License: GPL-3.0-or-later](https://img.shields.io/badge/License-GPL--3.0--or--later-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 
 ---
