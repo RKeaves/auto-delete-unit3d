@@ -131,6 +131,36 @@ For major changes, please open an issue first to discuss what you would like to 
 
 ---
 
+## Version History
+
+### v1.2.0 - 2025-02-27
+
+**Improvements:**
+-  **Add All Button** - Instantly queue all torrents from current page
+-  **New List Button** - Clear current queue and start fresh list
+-  **Progress Tracking** - Real-time progress indicator shows current/total deletions
+-  **Enhanced UI**:
+  - Better button alignment and styling
+  - Added status messages for queue operations
+  - Visual feedback when adding URLs
+  - Automatic text formatting for pasted/dropped URLs
+-  **Technical Improvements**:
+  - Increased delay between actions (5000ms) for better reliability
+  - Added force refresh functionality
+  - Improved 404 detection and handling
+  - Enhanced error recovery mechanisms
+  - Added troubleshooting note about refreshing if Add buttons don't appear
+  - Clearer visual hierarchy in UI instructions
+
+**Code Changes**:
+- Added 3 new UI buttons (Add All, New List, Enhanced Stop)
+- Implemented queue progress tracking system
+- Added textarea auto-formatting rules
+- Improved cross-browser compatibility
+- Added additional error checking
+  
+---
+
 ## Roadmap
 
 - **Future Enhancements:**
