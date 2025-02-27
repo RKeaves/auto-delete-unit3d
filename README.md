@@ -25,7 +25,7 @@ Use at your own risk. By using this software, you acknowledge that:
 - There is **NO UNDO** functionality - deleted files cannot be recovered
 - You must **VERIFY ALL URLS** before execution
 - You accept full responsibility for any data loss
-- Accidental deletions will require manual re-uploads
+- Accidental deletions will require re-upload
 - Proper permissions on tracker sites are required
 
 > **❗ Mandatory Precautions**  
