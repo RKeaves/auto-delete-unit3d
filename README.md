@@ -131,8 +131,6 @@ For major changes, please open an issue first to discuss what you would like to 
 
 ---
 
-## Version History
-
 ### v1.2.0 - 2025-02-27
 
 **Improvements:**
