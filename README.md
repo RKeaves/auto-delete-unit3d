@@ -133,6 +133,9 @@ For major changes, please open an issue first to discuss what you would like to 
 
 ### v1.2.0 - 2025-02-27
 
+![auto-delete-unit3d](https://i.ibb.co/YFzPmxYx/image.png)
+
+
 **Improvements:**
 -  **Add All Button** - Instantly queue all torrents from current page
 -  **New List Button** - Clear current queue and start fresh list
