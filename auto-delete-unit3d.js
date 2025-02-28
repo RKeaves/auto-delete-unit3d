@@ -24,7 +24,7 @@
     'use strict';
     const STORAGE_KEY = 'autoDeleteQueue';
     const REASON_TEXT = 'sorry, file deleted !'; // Deletion reason text
-    const DELAY = 5000; // Delay in ms
+    const DELAY = 10000; // Delay in ms
 
     class TorrentDeleter {
         constructor() {
